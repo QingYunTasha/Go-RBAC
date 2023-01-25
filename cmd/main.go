@@ -2,8 +2,10 @@ package main
 
 import (
 	Config "go-authorization/config"
+	HttpDelivery "go-authorization/internal/delivery/http"
+	Db "go-authorization/internal/repository/db"
 	OrmFactory "go-authorization/internal/repository/orm/factory"
-	Db "go-authorization/model/db"
+	UsecaseFactory "go-authorization/internal/usecase/factory"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,8 +23,7 @@ func main() {
 		panic("orm init fail")
 	}
 
-	ApiRepository, err := ApiFactory.InitApi(OrmRepository)
-	resourceApi := Api.NewResourceApi(OrmRepository)
+	UseCaseRepository := UsecaseFactory.InitUsecaseRepository(OrmRepository)
 
 	server := gin.Default()
 	server.GET("/health", func(c *gin.Context) {
@@ -31,14 +32,7 @@ func main() {
 		})
 	})
 
-	resource := server.Group("/resource")
-	{
-		resource.GET("/", resourceApi.GetAll)
-		resource.GET("/:name", resourceApi.Get)
-		resource.POST("/", resourceApi.Create)
-		resource.DELETE("/:name", resourceApi.Delete)
-		resource.PUT("/:title", resourceApi.Update)
-	}
+	HttpDelivery.NewUserHandler(server, UseCaseRepository.User)
 
 	server.Run(":8080")
 }

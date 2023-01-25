@@ -8,5 +8,3 @@ type Level struct {
 }
 
 type LevelRepository interface{}
-
-type LevelUsecase interface{}

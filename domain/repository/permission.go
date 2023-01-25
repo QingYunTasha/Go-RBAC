@@ -16,5 +16,3 @@ type Permission struct {
 }
 
 type PermissionRepository interface{}
-
-type PermissionUsecase interface{}

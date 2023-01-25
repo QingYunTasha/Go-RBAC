@@ -10,6 +10,3 @@ type Resource struct {
 
 type ResourceRepository interface {
 }
-
-type ResourceUsecase interface {
-}

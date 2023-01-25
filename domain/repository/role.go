@@ -15,6 +15,3 @@ type RoleRepository interface {
 	Update(name string, role *Role) error
 	Delete(name string) error
 }
-
-type RoleUsecase interface {
-}
