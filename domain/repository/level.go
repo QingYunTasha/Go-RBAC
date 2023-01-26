@@ -10,7 +10,7 @@ type Level struct {
 type LevelRepository interface {
 	GetAll() ([]Level, error)
 	Get(name string) (Level, error)
-	Create(role *Level) error
+	Create(level *Level) error
 	Update(name string, level *Level) error
 	Delete(name string) error
 }

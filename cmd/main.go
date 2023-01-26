@@ -33,6 +33,9 @@ func main() {
 	})
 
 	HttpDelivery.NewUserHandler(server, UseCaseRepository.User)
+	HttpDelivery.NewRoleHandler(server, UseCaseRepository.Role)
+	HttpDelivery.NewPermissionHandler(server, UseCaseRepository.Permission)
+	HttpDelivery.NewResourceHandler(server, UseCaseRepository.Resource)
 
 	server.Run(":8080")
 }

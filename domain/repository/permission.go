@@ -2,16 +2,16 @@ package repositorydomain
 
 import "gorm.io/gorm"
 
-type operation string
+type Operation string
 
 const (
-	WRITE operation = "write"
-	READ  operation = "read"
+	WRITE Operation = "write"
+	READ  Operation = "read"
 )
 
 type Permission struct {
 	gorm.Model
-	Operation    operation `gorm:"not null"`
+	Operation    Operation `gorm:"not null"`
 	ResourceName string
 }
 
