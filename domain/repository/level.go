@@ -7,4 +7,10 @@ type Level struct {
 	Name string `gorm:"unique, not null"`
 }
 
-type LevelRepository interface{}
+type LevelRepository interface {
+	GetAll() ([]Level, error)
+	Get(name string) (Level, error)
+	Create(role *Level) error
+	Update(name string, level *Level) error
+	Delete(name string) error
+}

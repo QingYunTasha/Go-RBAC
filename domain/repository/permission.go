@@ -15,4 +15,9 @@ type Permission struct {
 	ResourceName string
 }
 
-type PermissionRepository interface{}
+type PermissionRepository interface {
+	GetAll() ([]Permission, error)
+	GetByResource(resourceName string) ([]Permission, error)
+	Create(permission *Permission) error
+	Delete(resourceName string, operation string) error
+}

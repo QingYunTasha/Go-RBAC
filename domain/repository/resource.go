@@ -9,4 +9,9 @@ type Resource struct {
 }
 
 type ResourceRepository interface {
+	GetAll() ([]Resource, error)
+	Get(name string) (Resource, error)
+	Create(role *Resource) error
+	Update(name string, resource *Resource) error
+	Delete(name string) error
 }
