@@ -11,13 +11,13 @@ const (
 
 type Permission struct {
 	gorm.Model
-	Operation    Operation `gorm:"not null"`
-	ResourceName string
+	Operation    Operation `gorm:"primaryKey;not null"`
+	ResourceName string    `gorm:"primaryKey;not null"`
 }
 
 type PermissionRepository interface {
 	GetAll() ([]Permission, error)
 	GetByResource(resourceName string) ([]Permission, error)
 	Create(permission *Permission) error
-	Delete(resourceName string, operation string) error
+	Delete(resourceName string, operation Operation) error
 }

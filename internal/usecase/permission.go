@@ -29,5 +29,5 @@ func (rsa *PermissionUsecase) Create(ctx context.Context, Permission *RepoDomain
 }
 
 func (rsa *PermissionUsecase) Delete(ctx context.Context, resourceName string, operation string) error {
-	return rsa.orm.Permission.Delete(resourceName, operation)
+	return rsa.orm.Permission.Delete(resourceName, RepoDomain.Operation(operation))
 }

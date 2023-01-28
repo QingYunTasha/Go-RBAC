@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Role struct {
 	gorm.Model
-	Name  string `gorm:"unique, not null"`
+	Name  string `gorm:"unique;not null"`
 	Users []Role `gorm:"foreignKey:RoleName;references:Name"`
 }
 

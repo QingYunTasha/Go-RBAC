@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Level struct {
 	gorm.Model
-	Name string `gorm:"unique, not null"`
+	Name string `gorm:"primaryKey;not null"`
 }
 
 type LevelRepository interface {
