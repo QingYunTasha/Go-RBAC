@@ -1,11 +1,8 @@
 package repositorydomain
 
-import "gorm.io/gorm"
-
 type Resource struct {
-	gorm.Model
-	Name        string       `gorm:"unique;not null"`
-	Permissions []Permission `gorm:"foreignKey:ResourceName;references:Name"`
+	Name        string       `gorm:"primaryKey"`
+	Permissions []Permission `gorm:"foreignKey:ResourceName;references:Name;constraint:OnDelete:CASCADE"`
 }
 
 type ResourceRepository interface {

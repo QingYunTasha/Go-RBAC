@@ -1,23 +1,13 @@
 package repositorydomain
 
-import "gorm.io/gorm"
-
-type Operation string
-
-const (
-	WRITE Operation = "write"
-	READ  Operation = "read"
-)
-
 type Permission struct {
-	gorm.Model
-	Operation    Operation `gorm:"primaryKey;not null"`
-	ResourceName string    `gorm:"primaryKey;not null"`
+	Operation    string `gorm:"primaryKey"`
+	ResourceName string `gorm:"primaryKey"`
 }
 
 type PermissionRepository interface {
 	GetAll() ([]Permission, error)
 	GetByResource(resourceName string) ([]Permission, error)
 	Create(permission *Permission) error
-	Delete(resourceName string, operation Operation) error
+	Delete(resourceName string, operation string) error
 }

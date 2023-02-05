@@ -1,11 +1,8 @@
 package repositorydomain
 
-import "gorm.io/gorm"
-
 type Role struct {
-	gorm.Model
-	Name  string `gorm:"unique;not null"`
-	Users []Role `gorm:"foreignKey:RoleName;references:Name"`
+	Name  string `gorm:"primaryKey"`
+	Users []User `gorm:"foreignKey:RoleName;references:Name"`
 }
 
 type RoleRepository interface {

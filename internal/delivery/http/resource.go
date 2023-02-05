@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"fmt"
 	RepoDomain "go-authorization/domain/repository"
 	UsecaseDomain "go-authorization/domain/usecase"
 
@@ -21,51 +22,57 @@ func NewResourceHandler(server *gin.Engine, usecase UsecaseDomain.ResourceUsecas
 	user.GET("/", handler.GetAll)
 	user.GET("/:name", handler.Get)
 	user.POST("/", handler.Create)
-	user.PUT("/", handler.Update)
+	user.PUT("/:name", handler.Update)
 	user.DELETE("/:name", handler.Delete)
 }
 
 func (rsh *ResourceHandler) GetAll(c *gin.Context) {
 	res, err := rsh.ResourceUsecase.GetAll(context.TODO())
 	if err != nil {
-		c.JSON(400, err)
+		c.JSON(400, err.Error())
 		return
 	}
 	c.JSON(200, res)
 }
 
 func (rsh *ResourceHandler) Get(c *gin.Context) {
-	resource, err := rsh.ResourceUsecase.Get(context.TODO(), c.PostForm("name"))
+	resource, err := rsh.ResourceUsecase.Get(context.TODO(), c.Param("name"))
 	if err != nil {
-		c.JSON(400, err)
+		c.JSON(400, err.Error())
 		return
 	}
 	c.JSON(200, resource)
 }
 
 func (rsh *ResourceHandler) Create(c *gin.Context) {
-	user := &RepoDomain.Resource{
-		Name: c.PostForm("name"),
+	resource := &RepoDomain.Resource{}
+	c.BindJSON(resource)
+
+	fmt.Printf("%v", *resource)
+
+	if err := rsh.ResourceUsecase.Create(context.TODO(), resource); err != nil {
+		c.JSON(400, err.Error())
+		return
 	}
-	if err := rsh.ResourceUsecase.Create(context.TODO(), user); err != nil {
-		c.JSON(400, err)
-	}
+
 	c.JSON(200, "success")
 }
 
 func (rsh *ResourceHandler) Update(c *gin.Context) {
-	user := &RepoDomain.Resource{
+	resource := &RepoDomain.Resource{
 		Name: c.PostForm("name"),
 	}
-	if err := rsh.ResourceUsecase.Update(context.TODO(), c.PostForm("name"), user); err != nil {
-		c.JSON(400, err)
+	if err := rsh.ResourceUsecase.Update(context.TODO(), c.Param("name"), resource); err != nil {
+		c.JSON(400, err.Error())
+		return
 	}
 	c.JSON(200, "success")
 }
 
 func (rsh *ResourceHandler) Delete(c *gin.Context) {
-	if err := rsh.ResourceUsecase.Delete(context.TODO(), c.PostForm("name")); err != nil {
-		c.JSON(400, err)
+	if err := rsh.ResourceUsecase.Delete(context.TODO(), c.Param("name")); err != nil {
+		c.JSON(400, err.Error())
+		return
 	}
 	c.JSON(200, "success")
 }

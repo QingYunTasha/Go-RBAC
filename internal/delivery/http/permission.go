@@ -32,16 +32,16 @@ func NewPermissionHandler(server *gin.Engine, usecase UsecaseDomain.PermissionUs
 func (pmh *PermissionHandler) GetAll(c *gin.Context) {
 	res, err := pmh.PermissionUsecase.GetAll(context.TODO())
 	if err != nil {
-		c.JSON(400, err)
+		c.JSON(400, err.Error())
 		return
 	}
 	c.JSON(200, res)
 }
 
 func (pmh *PermissionHandler) GetByResource(c *gin.Context) {
-	permissions, err := pmh.PermissionUsecase.GetByResource(context.TODO(), c.PostForm("resourcename"))
+	permissions, err := pmh.PermissionUsecase.GetByResource(context.TODO(), c.Param("resourcename"))
 	if err != nil {
-		c.JSON(400, err)
+		c.JSON(400, err.Error())
 		return
 	}
 	c.JSON(200, permissions)
@@ -49,17 +49,18 @@ func (pmh *PermissionHandler) GetByResource(c *gin.Context) {
 
 func (pmh *PermissionHandler) Create(c *gin.Context) {
 	user := &RepoDomain.Permission{
-		Operation: RepoDomain.Operation(c.PostForm("operation")),
+		Operation:    c.PostForm("operation"),
+		ResourceName: c.PostForm("resourcename"),
 	}
 	if err := pmh.PermissionUsecase.Create(context.TODO(), user); err != nil {
-		c.JSON(400, err)
+		c.JSON(400, err.Error())
 	}
 	c.JSON(200, "success")
 }
 
 func (pmh *PermissionHandler) Delete(c *gin.Context) {
-	if err := pmh.PermissionUsecase.Delete(context.TODO(), c.PostForm("resourcename"), c.PostForm("operation")); err != nil {
-		c.JSON(400, err)
+	if err := pmh.PermissionUsecase.Delete(context.TODO(), c.Param("resourcename"), c.Param("operation")); err != nil {
+		c.JSON(400, err.Error())
 	}
 	c.JSON(200, "success")
 }

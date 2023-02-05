@@ -16,7 +16,7 @@ type OrmRepository struct {
 }
 
 func InitOrmRepository(db *gorm.DB) (*OrmRepository, error) {
-	if err := db.AutoMigrate(&RepoDomain.Resource{}, &RepoDomain.Level{}); err != nil {
+	if err := db.AutoMigrate(&RepoDomain.Resource{}, &RepoDomain.Level{}, &RepoDomain.Permission{}, &RepoDomain.Role{}, &RepoDomain.User{}); err != nil {
 		return nil, err
 	}
 
