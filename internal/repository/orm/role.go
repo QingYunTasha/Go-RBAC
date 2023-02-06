@@ -37,9 +37,15 @@ func (ro *RoleOrm) Update(name string, role *RepoDomain.Role) error {
 }
 
 func (ro *RoleOrm) Delete(name string) error {
-	return ro.Db.Where("Name = ?", name).Delete(&RepoDomain.Role{}).Error
+	role, err := ro.Get(name)
+	if err != nil {
+		return err
+	}
+
+	return ro.Db.Where("Name = ?", name).Delete(&role).Error
 }
 
+/*
 func (ro *UserOrm) AppendUserAssociation(user *RepoDomain.User) error {
 	return ro.Db.Model(&RepoDomain.Role{}).Where("Name = ?", user.RoleName).Association("Users").Append(user)
 }
@@ -55,3 +61,4 @@ func (ro *UserOrm) ClearUserAssociation(user *RepoDomain.User) error {
 func (ro *UserOrm) CountUserAssociation(user *RepoDomain.User) int64 {
 	return ro.Db.Model(&RepoDomain.Role{}).Where("Name = ?", user.RoleName).Association("Users").Count()
 }
+*/

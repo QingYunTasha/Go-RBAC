@@ -25,7 +25,7 @@ func (rso *ResourceOrm) GetAll() ([]RepoDomain.Resource, error) {
 
 func (rso *ResourceOrm) Get(name string) (RepoDomain.Resource, error) {
 	resource := RepoDomain.Resource{}
-	err := rso.Db.Where("name = ?", name).Take(&resource).Error
+	err := rso.Db.Where("Name = ?", name).Take(&resource).Error
 	return resource, err
 }
 
@@ -49,5 +49,5 @@ func (rso *ResourceOrm) Delete(name string) error {
 		return err
 	}
 
-	return rso.Db.Where("name = ?", resource.Name).Delete(&resource).Error
+	return rso.Db.Where("Name = ?", name).Delete(&resource).Error
 }

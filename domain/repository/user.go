@@ -2,7 +2,7 @@ package repositorydomain
 
 type User struct {
 	Name     string
-	Email    string `gorm:"primaryKey"`
+	Email    string `gorm:"primaryKey;not null;default:null"`
 	RoleName *string
 }
 

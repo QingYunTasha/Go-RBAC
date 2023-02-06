@@ -44,11 +44,10 @@ func (ush *UserHandler) Get(c *gin.Context) {
 }
 
 func (ush *UserHandler) Create(c *gin.Context) {
-	rolename := c.PostForm("rolename")
 	user := &RepoDomain.User{
 		Name:     c.PostForm("name"),
 		Email:    c.PostForm("email"),
-		RoleName: &rolename,
+		RoleName: c.PostForm("rolename"),
 	}
 	if err := ush.UserUsecase.Create(context.TODO(), user); err != nil {
 		c.JSON(400, err.Error())
@@ -58,11 +57,10 @@ func (ush *UserHandler) Create(c *gin.Context) {
 
 func (ush *UserHandler) Update(c *gin.Context) {
 	email := c.Param("email")
-	rolename := c.Param("rolename")
 	user := &RepoDomain.User{
 		Name:     c.PostForm("name"),
 		Email:    email,
-		RoleName: &rolename,
+		RoleName: c.Param("rolename"),
 	}
 	if err := ush.UserUsecase.Update(context.TODO(), email, user); err != nil {
 		c.JSON(400, err.Error())

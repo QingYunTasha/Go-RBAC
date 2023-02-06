@@ -1,7 +1,7 @@
 package repositorydomain
 
 type Role struct {
-	Name  string `gorm:"primaryKey"`
+	Name  string `gorm:"primaryKey;not null;default:null"`
 	Users []User `gorm:"foreignKey:RoleName;references:Name"`
 }
 

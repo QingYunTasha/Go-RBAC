@@ -1,8 +1,8 @@
 package repositorydomain
 
 type Permission struct {
-	Operation    string `gorm:"primaryKey"`
-	ResourceName string `gorm:"primaryKey"`
+	Operation    string `gorm:"primaryKey;not null;default:null"`
+	ResourceName string `gorm:"primaryKey;not null;default:null"`
 }
 
 type PermissionRepository interface {
