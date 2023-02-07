@@ -2,7 +2,6 @@ package http
 
 import (
 	"context"
-	"fmt"
 	RepoDomain "go-authorization/domain/repository"
 	UsecaseDomain "go-authorization/domain/usecase"
 
@@ -45,24 +44,25 @@ func (rsh *ResourceHandler) Get(c *gin.Context) {
 }
 
 func (rsh *ResourceHandler) Create(c *gin.Context) {
-	resource := &RepoDomain.Resource{}
-	c.BindJSON(resource)
+	resource := RepoDomain.Resource{}
+	if err := c.BindJSON(&resource); err != nil {
+		c.JSON(400, err.Error())
+	}
 
-	fmt.Printf("%v", *resource)
-
-	if err := rsh.ResourceUsecase.Create(context.TODO(), resource); err != nil {
+	if err := rsh.ResourceUsecase.Create(context.TODO(), &resource); err != nil {
 		c.JSON(400, err.Error())
 		return
 	}
-
 	c.JSON(200, "success")
 }
 
 func (rsh *ResourceHandler) Update(c *gin.Context) {
-	resource := &RepoDomain.Resource{
-		Name: c.PostForm("name"),
+	resource := RepoDomain.Resource{}
+	if err := c.BindJSON(&resource); err != nil {
+		c.JSON(400, err.Error())
 	}
-	if err := rsh.ResourceUsecase.Update(context.TODO(), c.Param("name"), resource); err != nil {
+
+	if err := rsh.ResourceUsecase.Update(context.TODO(), c.Param("name"), &resource); err != nil {
 		c.JSON(400, err.Error())
 		return
 	}

@@ -26,12 +26,12 @@ func NewRoleHandler(server *gin.Engine, usecase UsecaseDomain.RoleUsecase) {
 }
 
 func (rlh *RoleHandler) GetAll(c *gin.Context) {
-	res, err := rlh.RoleUsecase.GetAll(context.TODO())
+	roles, err := rlh.RoleUsecase.GetAll(context.TODO())
 	if err != nil {
 		c.JSON(400, err.Error())
 		return
 	}
-	c.JSON(200, res)
+	c.JSON(200, roles)
 }
 
 func (rlh *RoleHandler) Get(c *gin.Context) {
@@ -45,20 +45,24 @@ func (rlh *RoleHandler) Get(c *gin.Context) {
 }
 
 func (rlh *RoleHandler) Create(c *gin.Context) {
-	user := &RepoDomain.Role{
-		Name: c.PostForm("name"),
+	role := RepoDomain.Role{}
+	if err := c.BindJSON(&role); err != nil {
+		c.JSON(400, err.Error())
 	}
-	if err := rlh.RoleUsecase.Create(context.TODO(), user); err != nil {
+
+	if err := rlh.RoleUsecase.Create(context.TODO(), &role); err != nil {
 		c.JSON(400, err.Error())
 	}
 	c.JSON(200, "success")
 }
 
 func (rlh *RoleHandler) Update(c *gin.Context) {
-	user := &RepoDomain.Role{
-		Name: c.PostForm("name"),
+	role := RepoDomain.Role{}
+	if err := c.BindJSON(&role); err != nil {
+		c.JSON(400, err.Error())
 	}
-	if err := rlh.RoleUsecase.Update(context.TODO(), c.Param("name"), user); err != nil {
+
+	if err := rlh.RoleUsecase.Update(context.TODO(), c.Param("name"), &role); err != nil {
 		c.JSON(400, err.Error())
 	}
 	c.JSON(200, "success")

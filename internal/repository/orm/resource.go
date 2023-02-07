@@ -25,7 +25,7 @@ func (rso *ResourceOrm) GetAll() ([]RepoDomain.Resource, error) {
 
 func (rso *ResourceOrm) Get(name string) (RepoDomain.Resource, error) {
 	resource := RepoDomain.Resource{}
-	err := rso.Db.Where("Name = ?", name).Take(&resource).Error
+	err := rso.Db.Take(&resource, name).Error
 	return resource, err
 }
 
@@ -38,9 +38,7 @@ func (rso *ResourceOrm) Update(name string, resource *RepoDomain.Resource) error
 	if err != nil {
 		return err
 	}
-	return rso.Db.Model(oldResource).Updates(map[string]interface{}{
-		"name": resource.Name,
-	}).Error
+	return rso.Db.Model(&oldResource).Updates(&resource).Error
 }
 
 func (rso *ResourceOrm) Delete(name string) error {
@@ -49,5 +47,5 @@ func (rso *ResourceOrm) Delete(name string) error {
 		return err
 	}
 
-	return rso.Db.Where("Name = ?", name).Delete(&resource).Error
+	return rso.Db.Delete(&resource).Error
 }

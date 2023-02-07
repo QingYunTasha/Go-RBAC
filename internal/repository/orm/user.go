@@ -24,13 +24,13 @@ func (uso *UserOrm) GetAll() ([]RepoDomain.User, error) {
 
 func (uso *UserOrm) Get(email string) (RepoDomain.User, error) {
 	user := RepoDomain.User{}
-	err := uso.Db.Where("Email = ?", email).Take(&user).Error
+	err := uso.Db.Take(&user, email).Error
 	return user, err
 }
 
 func (uso *UserOrm) GetByRole(roleName string) ([]RepoDomain.User, error) {
 	users := []RepoDomain.User{}
-	err := uso.Db.Model(&RepoDomain.Role{}).Where("Name = ?", roleName).Association("Users").Find(users)
+	err := uso.Db.Model(&RepoDomain.Role{Name: roleName}).Association("Users").Find(users)
 	return users, err
 }
 
@@ -39,9 +39,18 @@ func (uso *UserOrm) Create(user *RepoDomain.User) error {
 }
 
 func (uso *UserOrm) Update(email string, user *RepoDomain.User) error {
-	return uso.Db.Model(&RepoDomain.User{}).Where("Email = ?", email).Updates(user).Error
+	oldUser, err := uso.Get(email)
+	if err != nil {
+		return err
+	}
+	return uso.Db.Model(&oldUser).Updates(&user).Error
 }
 
 func (uso *UserOrm) Delete(email string) error {
-	return uso.Db.Where("Email = ?", email).Delete(&RepoDomain.User{}).Error
+	user, err := uso.Get(email)
+	if err != nil {
+		return err
+	}
+
+	return uso.Db.Delete(&user).Error
 }

@@ -30,12 +30,12 @@ func NewPermissionHandler(server *gin.Engine, usecase UsecaseDomain.PermissionUs
 }
 
 func (pmh *PermissionHandler) GetAll(c *gin.Context) {
-	res, err := pmh.PermissionUsecase.GetAll(context.TODO())
+	permissions, err := pmh.PermissionUsecase.GetAll(context.TODO())
 	if err != nil {
 		c.JSON(400, err.Error())
 		return
 	}
-	c.JSON(200, res)
+	c.JSON(200, permissions)
 }
 
 func (pmh *PermissionHandler) GetByResource(c *gin.Context) {
@@ -48,11 +48,12 @@ func (pmh *PermissionHandler) GetByResource(c *gin.Context) {
 }
 
 func (pmh *PermissionHandler) Create(c *gin.Context) {
-	user := &RepoDomain.Permission{
-		Operation:    c.PostForm("operation"),
-		ResourceName: c.PostForm("resourcename"),
+	permission := RepoDomain.Permission{}
+	if err := c.BindJSON(&permission); err != nil {
+		c.JSON(400, err.Error())
 	}
-	if err := pmh.PermissionUsecase.Create(context.TODO(), user); err != nil {
+
+	if err := pmh.PermissionUsecase.Create(context.TODO(), &permission); err != nil {
 		c.JSON(400, err.Error())
 	}
 	c.JSON(200, "success")

@@ -24,7 +24,7 @@ func (ro *RoleOrm) GetAll() ([]RepoDomain.Role, error) {
 
 func (ro *RoleOrm) Get(name string) (RepoDomain.Role, error) {
 	role := RepoDomain.Role{}
-	err := ro.Db.Where("Name = ?", name).Take(&role).Error
+	err := ro.Db.Take(&role, name).Error
 	return role, err
 }
 
@@ -33,7 +33,11 @@ func (ro *RoleOrm) Create(role *RepoDomain.Role) error {
 }
 
 func (ro *RoleOrm) Update(name string, role *RepoDomain.Role) error {
-	return ro.Db.Model(&RepoDomain.Role{}).Where("Name = ?", name).Updates(role).Error
+	oldRole, err := ro.Get(name)
+	if err != nil {
+		return err
+	}
+	return ro.Db.Model(&oldRole).Updates(&role).Error
 }
 
 func (ro *RoleOrm) Delete(name string) error {
@@ -42,7 +46,7 @@ func (ro *RoleOrm) Delete(name string) error {
 		return err
 	}
 
-	return ro.Db.Where("Name = ?", name).Delete(&role).Error
+	return ro.Db.Delete(&role).Error
 }
 
 /*

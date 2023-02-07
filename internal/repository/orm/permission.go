@@ -24,7 +24,7 @@ func (rso *PermissionOrm) GetAll() ([]RepoDomain.Permission, error) {
 
 func (rso *PermissionOrm) GetByResource(resourceName string) ([]RepoDomain.Permission, error) {
 	permissions := []RepoDomain.Permission{}
-	err := rso.Db.Model(&RepoDomain.Resource{}).Where("Name = ?", resourceName).Association("Permissions").Find(&permissions)
+	err := rso.Db.Model(&RepoDomain.Resource{Name: resourceName}).Association("Permissions").Find(&permissions)
 	return permissions, err
 }
 
@@ -37,5 +37,5 @@ func (rso *PermissionOrm) Delete(resourceName string, operation string) error {
 	if err := rso.Db.Where("Operation = ? AND ResourceName = ?", operation, resourceName).Take(&permission).Error; err != nil {
 		return err
 	}
-	return rso.Db.Where("Operation = ? AND ResourceName = ?", operation, resourceName).Delete(&permission).Error
+	return rso.Db.Delete(&permission).Error
 }
