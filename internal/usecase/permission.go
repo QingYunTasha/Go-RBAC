@@ -24,6 +24,10 @@ func (rsa *PermissionUsecase) GetByResource(ctx context.Context, resourceName st
 	return rsa.orm.Permission.GetByResource(resourceName)
 }
 
+func (rsa *PermissionUsecase) GetByRole(ctx context.Context, role *RepoDomain.Role) ([]RepoDomain.Permission, error) {
+	return rsa.orm.Permission.GetByRole(role)
+}
+
 func (rsa *PermissionUsecase) Create(ctx context.Context, Permission *RepoDomain.Permission) error {
 	return rsa.orm.Permission.Create(Permission)
 }

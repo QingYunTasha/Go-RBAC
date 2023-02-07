@@ -28,6 +28,12 @@ func (ro *RoleOrm) Get(name string) (RepoDomain.Role, error) {
 	return role, err
 }
 
+func (ro *RoleOrm) GetByPermission(permission *RepoDomain.Permission) ([]RepoDomain.Role, error) {
+	var roles []RepoDomain.Role
+	err := ro.Db.Model(permission).Preload("Roles").Find(&roles).Error
+	return roles, err
+}
+
 func (ro *RoleOrm) Create(role *RepoDomain.Role) error {
 	return ro.Db.Create(role).Error
 }

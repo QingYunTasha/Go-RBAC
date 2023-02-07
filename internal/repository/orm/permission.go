@@ -28,6 +28,12 @@ func (rso *PermissionOrm) GetByResource(resourceName string) ([]RepoDomain.Permi
 	return permissions, err
 }
 
+func (rso *PermissionOrm) GetByRole(role *RepoDomain.Role) ([]RepoDomain.Permission, error) {
+	var permissions []RepoDomain.Permission
+	err := rso.Db.Model(role).Preload("Permissions").Find(&permissions).Error
+	return permissions, err
+}
+
 func (rso *PermissionOrm) Create(permission *RepoDomain.Permission) error {
 	return rso.Db.Create(&permission).Error
 }

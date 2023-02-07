@@ -24,6 +24,10 @@ func (rsa *RoleUsecase) Get(ctx context.Context, name string) (RepoDomain.Role, 
 	return rsa.orm.Role.Get(name)
 }
 
+func (rsa *RoleUsecase) GetByPermission(ctx context.Context, permission *RepoDomain.Permission) ([]RepoDomain.Role, error) {
+	return rsa.orm.Role.GetByPermission(permission)
+}
+
 func (rsa *RoleUsecase) Create(ctx context.Context, Role *RepoDomain.Role) error {
 	return rsa.orm.Role.Create(Role)
 }
