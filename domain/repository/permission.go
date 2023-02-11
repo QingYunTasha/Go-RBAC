@@ -1,7 +1,7 @@
 package repositorydomain
 
 type Permission struct {
-	Operation    string  `gorm:"primaryKey;not null;default:null"`
+	Action       string  `gorm:"primaryKey;not null;default:null"`
 	ResourceName string  `gorm:"primaryKey;not null;default:null"`
 	Roles        []*Role `gorm:"many2many:user_permissions;constraint:OnUpdate:CASCADE"`
 }

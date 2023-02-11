@@ -3,6 +3,7 @@ package http
 import (
 	RepoDomain "go-authorization/domain/repository"
 	UsecaseDomain "go-authorization/domain/usecase"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,53 +28,53 @@ func NewUserHandler(server *gin.Engine, usecase UsecaseDomain.UserUsecase) {
 func (ush *UserHandler) GetAll(c *gin.Context) {
 	res, err := ush.UserUsecase.GetAll(c.Request.Context())
 	if err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(200, res)
+	c.JSON(http.StatusOK, res)
 }
 
 func (ush *UserHandler) Get(c *gin.Context) {
 	res, err := ush.UserUsecase.Get(c.Request.Context(), c.Param("email"))
 	if err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(200, res)
+	c.JSON(http.StatusOK, res)
 }
 
 func (ush *UserHandler) Create(c *gin.Context) {
 	user := RepoDomain.User{}
 	if err := c.BindJSON(&user); err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := ush.UserUsecase.Create(c.Request.Context(), &user); err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(200, "success")
+	c.JSON(http.StatusOK, "success")
 }
 
 func (ush *UserHandler) Update(c *gin.Context) {
 	user := RepoDomain.User{}
 	if err := c.BindJSON(&user); err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
 	if err := ush.UserUsecase.Update(c.Request.Context(), c.Param("email"), &user); err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(200, "success")
+	c.JSON(http.StatusOK, "success")
 }
 
 func (ush *UserHandler) Delete(c *gin.Context) {
 	if err := ush.UserUsecase.Delete(c.Request.Context(), c.Param("email")); err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(200, "success")
+	c.JSON(http.StatusOK, "success")
 }

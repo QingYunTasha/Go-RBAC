@@ -3,6 +3,7 @@ package http
 import (
 	RepoDomain "go-authorization/domain/repository"
 	UsecaseDomain "go-authorization/domain/usecase"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,36 +32,36 @@ func NewPermissionHandler(server *gin.Engine, usecase UsecaseDomain.PermissionUs
 func (pmh *PermissionHandler) GetAll(c *gin.Context) {
 	permissions, err := pmh.PermissionUsecase.GetAll(c.Request.Context())
 	if err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(200, permissions)
+	c.JSON(http.StatusOK, permissions)
 }
 
 func (pmh *PermissionHandler) GetByResource(c *gin.Context) {
 	permissions, err := pmh.PermissionUsecase.GetByResource(c.Request.Context(), c.Param("resourcename"))
 	if err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	c.JSON(200, permissions)
+	c.JSON(http.StatusOK, permissions)
 }
 
 func (pmh *PermissionHandler) Create(c *gin.Context) {
 	permission := RepoDomain.Permission{}
 	if err := c.BindJSON(&permission); err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 	}
 
 	if err := pmh.PermissionUsecase.Create(c.Request.Context(), &permission); err != nil {
-		c.JSON(400, err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 	}
-	c.JSON(200, "success")
+	c.JSON(http.StatusOK, "success")
 }
 
 func (pmh *PermissionHandler) Delete(c *gin.Context) {
-	if err := pmh.PermissionUsecase.Delete(c.Request.Context(), c.Param("resourcename"), c.Param("operation")); err != nil {
-		c.JSON(400, err.Error())
+	if err := pmh.PermissionUsecase.Delete(c.Request.Context(), c.Param("resourcename"), c.Param("action")); err != nil {
+		c.JSON(http.StatusBadRequest, err.Error())
 	}
-	c.JSON(200, "success")
+	c.JSON(http.StatusOK, "success")
 }

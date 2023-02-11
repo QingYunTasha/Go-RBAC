@@ -10,6 +10,7 @@ type RoleRepository interface {
 	GetAll() ([]Role, error)
 	Get(name string) (Role, error)
 	GetByPermission(permission *Permission) ([]Role, error)
+	GetByUser(user *User) (Role, error)
 	Create(role *Role) error
 	Update(name string, role *Role) error
 	Delete(name string) error

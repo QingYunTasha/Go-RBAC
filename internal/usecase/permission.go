@@ -32,6 +32,6 @@ func (rsa *PermissionUsecase) Create(ctx context.Context, Permission *RepoDomain
 	return rsa.orm.Permission.Create(Permission)
 }
 
-func (rsa *PermissionUsecase) Delete(ctx context.Context, resourceName string, operation string) error {
-	return rsa.orm.Permission.Delete(resourceName, operation)
+func (rsa *PermissionUsecase) Delete(ctx context.Context, resourceName string, action string) error {
+	return rsa.orm.Permission.Delete(resourceName, action)
 }

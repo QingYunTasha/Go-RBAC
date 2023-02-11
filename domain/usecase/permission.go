@@ -10,5 +10,5 @@ type PermissionUsecase interface {
 	GetByResource(ctx context.Context, resourceName string) ([]RepoDomain.Permission, error)
 	GetByRole(ctx context.Context, permission *RepoDomain.Role) ([]RepoDomain.Permission, error)
 	Create(ctx context.Context, permission *RepoDomain.Permission) error
-	Delete(ctx context.Context, resourceName string, operation string) error
+	Delete(ctx context.Context, resourceName string, action string) error
 }

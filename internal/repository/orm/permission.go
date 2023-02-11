@@ -38,10 +38,10 @@ func (rso *PermissionOrm) Create(permission *RepoDomain.Permission) error {
 	return rso.Db.Create(&permission).Error
 }
 
-func (rso *PermissionOrm) Delete(resourceName string, operation string) error {
+func (rso *PermissionOrm) Delete(resourceName string, action string) error {
 	permission := RepoDomain.Permission{
 		ResourceName: resourceName,
-		Operation:    operation,
+		Action:       action,
 	}
 
 	if err := rso.Db.Take(&permission).Error; err != nil {
