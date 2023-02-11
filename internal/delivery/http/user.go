@@ -1,7 +1,6 @@
 package http
 
 import (
-	"context"
 	RepoDomain "go-authorization/domain/repository"
 	UsecaseDomain "go-authorization/domain/usecase"
 
@@ -26,7 +25,7 @@ func NewUserHandler(server *gin.Engine, usecase UsecaseDomain.UserUsecase) {
 }
 
 func (ush *UserHandler) GetAll(c *gin.Context) {
-	res, err := ush.UserUsecase.GetAll(context.TODO())
+	res, err := ush.UserUsecase.GetAll(c.Request.Context())
 	if err != nil {
 		c.JSON(400, err.Error())
 		return
@@ -35,7 +34,7 @@ func (ush *UserHandler) GetAll(c *gin.Context) {
 }
 
 func (ush *UserHandler) Get(c *gin.Context) {
-	res, err := ush.UserUsecase.Get(context.TODO(), c.Param("email"))
+	res, err := ush.UserUsecase.Get(c.Request.Context(), c.Param("email"))
 	if err != nil {
 		c.JSON(400, err.Error())
 		return
@@ -50,7 +49,7 @@ func (ush *UserHandler) Create(c *gin.Context) {
 		return
 	}
 
-	if err := ush.UserUsecase.Create(context.TODO(), &user); err != nil {
+	if err := ush.UserUsecase.Create(c.Request.Context(), &user); err != nil {
 		c.JSON(400, err.Error())
 		return
 	}
@@ -64,7 +63,7 @@ func (ush *UserHandler) Update(c *gin.Context) {
 		return
 	}
 
-	if err := ush.UserUsecase.Update(context.TODO(), c.Param("email"), &user); err != nil {
+	if err := ush.UserUsecase.Update(c.Request.Context(), c.Param("email"), &user); err != nil {
 		c.JSON(400, err.Error())
 		return
 	}
@@ -72,7 +71,7 @@ func (ush *UserHandler) Update(c *gin.Context) {
 }
 
 func (ush *UserHandler) Delete(c *gin.Context) {
-	if err := ush.UserUsecase.Delete(context.TODO(), c.Param("email")); err != nil {
+	if err := ush.UserUsecase.Delete(c.Request.Context(), c.Param("email")); err != nil {
 		c.JSON(400, err.Error())
 		return
 	}

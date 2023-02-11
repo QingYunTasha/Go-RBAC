@@ -1,7 +1,6 @@
 package http
 
 import (
-	"context"
 	RepoDomain "go-authorization/domain/repository"
 	UsecaseDomain "go-authorization/domain/usecase"
 
@@ -26,7 +25,7 @@ func NewResourceHandler(server *gin.Engine, usecase UsecaseDomain.ResourceUsecas
 }
 
 func (rsh *ResourceHandler) GetAll(c *gin.Context) {
-	res, err := rsh.ResourceUsecase.GetAll(context.TODO())
+	res, err := rsh.ResourceUsecase.GetAll(c.Request.Context())
 	if err != nil {
 		c.JSON(400, err.Error())
 		return
@@ -35,7 +34,7 @@ func (rsh *ResourceHandler) GetAll(c *gin.Context) {
 }
 
 func (rsh *ResourceHandler) Get(c *gin.Context) {
-	resource, err := rsh.ResourceUsecase.Get(context.TODO(), c.Param("name"))
+	resource, err := rsh.ResourceUsecase.Get(c.Request.Context(), c.Param("name"))
 	if err != nil {
 		c.JSON(400, err.Error())
 		return
@@ -49,7 +48,7 @@ func (rsh *ResourceHandler) Create(c *gin.Context) {
 		c.JSON(400, err.Error())
 	}
 
-	if err := rsh.ResourceUsecase.Create(context.TODO(), &resource); err != nil {
+	if err := rsh.ResourceUsecase.Create(c.Request.Context(), &resource); err != nil {
 		c.JSON(400, err.Error())
 		return
 	}
@@ -62,7 +61,7 @@ func (rsh *ResourceHandler) Update(c *gin.Context) {
 		c.JSON(400, err.Error())
 	}
 
-	if err := rsh.ResourceUsecase.Update(context.TODO(), c.Param("name"), &resource); err != nil {
+	if err := rsh.ResourceUsecase.Update(c.Request.Context(), c.Param("name"), &resource); err != nil {
 		c.JSON(400, err.Error())
 		return
 	}
@@ -70,7 +69,7 @@ func (rsh *ResourceHandler) Update(c *gin.Context) {
 }
 
 func (rsh *ResourceHandler) Delete(c *gin.Context) {
-	if err := rsh.ResourceUsecase.Delete(context.TODO(), c.Param("name")); err != nil {
+	if err := rsh.ResourceUsecase.Delete(c.Request.Context(), c.Param("name")); err != nil {
 		c.JSON(400, err.Error())
 		return
 	}

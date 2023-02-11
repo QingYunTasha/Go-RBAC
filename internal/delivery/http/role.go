@@ -1,7 +1,6 @@
 package http
 
 import (
-	"context"
 	RepoDomain "go-authorization/domain/repository"
 	UsecaseDomain "go-authorization/domain/usecase"
 
@@ -26,7 +25,7 @@ func NewRoleHandler(server *gin.Engine, usecase UsecaseDomain.RoleUsecase) {
 }
 
 func (rlh *RoleHandler) GetAll(c *gin.Context) {
-	roles, err := rlh.RoleUsecase.GetAll(context.TODO())
+	roles, err := rlh.RoleUsecase.GetAll(c.Request.Context())
 	if err != nil {
 		c.JSON(400, err.Error())
 		return
@@ -35,7 +34,7 @@ func (rlh *RoleHandler) GetAll(c *gin.Context) {
 }
 
 func (rlh *RoleHandler) Get(c *gin.Context) {
-	role, err := rlh.RoleUsecase.Get(context.TODO(), c.Param("name"))
+	role, err := rlh.RoleUsecase.Get(c.Request.Context(), c.Param("name"))
 	if err != nil {
 		c.JSON(400, err.Error())
 		return
@@ -50,7 +49,7 @@ func (rlh *RoleHandler) Create(c *gin.Context) {
 		c.JSON(400, err.Error())
 	}
 
-	if err := rlh.RoleUsecase.Create(context.TODO(), &role); err != nil {
+	if err := rlh.RoleUsecase.Create(c.Request.Context(), &role); err != nil {
 		c.JSON(400, err.Error())
 	}
 	c.JSON(200, "success")
@@ -62,14 +61,14 @@ func (rlh *RoleHandler) Update(c *gin.Context) {
 		c.JSON(400, err.Error())
 	}
 
-	if err := rlh.RoleUsecase.Update(context.TODO(), c.Param("name"), &role); err != nil {
+	if err := rlh.RoleUsecase.Update(c.Request.Context(), c.Param("name"), &role); err != nil {
 		c.JSON(400, err.Error())
 	}
 	c.JSON(200, "success")
 }
 
 func (rlh *RoleHandler) Delete(c *gin.Context) {
-	if err := rlh.RoleUsecase.Delete(context.TODO(), c.Param("name")); err != nil {
+	if err := rlh.RoleUsecase.Delete(c.Request.Context(), c.Param("name")); err != nil {
 		c.JSON(400, err.Error())
 	}
 	c.JSON(200, "success")
