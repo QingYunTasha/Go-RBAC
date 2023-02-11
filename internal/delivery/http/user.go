@@ -47,10 +47,12 @@ func (ush *UserHandler) Create(c *gin.Context) {
 	user := RepoDomain.User{}
 	if err := c.BindJSON(&user); err != nil {
 		c.JSON(400, err.Error())
+		return
 	}
 
 	if err := ush.UserUsecase.Create(context.TODO(), &user); err != nil {
 		c.JSON(400, err.Error())
+		return
 	}
 	c.JSON(200, "success")
 }
@@ -59,10 +61,12 @@ func (ush *UserHandler) Update(c *gin.Context) {
 	user := RepoDomain.User{}
 	if err := c.BindJSON(&user); err != nil {
 		c.JSON(400, err.Error())
+		return
 	}
 
 	if err := ush.UserUsecase.Update(context.TODO(), c.Param("email"), &user); err != nil {
 		c.JSON(400, err.Error())
+		return
 	}
 	c.JSON(200, "success")
 }
@@ -70,6 +74,7 @@ func (ush *UserHandler) Update(c *gin.Context) {
 func (ush *UserHandler) Delete(c *gin.Context) {
 	if err := ush.UserUsecase.Delete(context.TODO(), c.Param("email")); err != nil {
 		c.JSON(400, err.Error())
+		return
 	}
 	c.JSON(200, "success")
 }

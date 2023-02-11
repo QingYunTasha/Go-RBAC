@@ -2,8 +2,8 @@ package repositorydomain
 
 type Role struct {
 	Name        string        `gorm:"primaryKey;not null;default:null"`
-	Users       []User        `gorm:"foreignKey:RoleName;references:Name"`
-	Permissions []*Permission `gorm:"many2many:user_permissions;"`
+	Users       []User        `gorm:"foreignKey:RoleName;references:Name;constraint:OnUpdate:CASCADE"`
+	Permissions []*Permission `gorm:"many2many:user_permissions;constraint:OnUpdate:CASCADE"`
 }
 
 type RoleRepository interface {

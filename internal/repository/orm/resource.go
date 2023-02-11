@@ -24,8 +24,10 @@ func (rso *ResourceOrm) GetAll() ([]RepoDomain.Resource, error) {
 }
 
 func (rso *ResourceOrm) Get(name string) (RepoDomain.Resource, error) {
-	resource := RepoDomain.Resource{}
-	err := rso.Db.Take(&resource, name).Error
+	resource := RepoDomain.Resource{
+		Name: name,
+	}
+	err := rso.Db.Take(&resource).Error
 	return resource, err
 }
 

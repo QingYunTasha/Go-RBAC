@@ -34,7 +34,7 @@ export default function(){
 	        }]
         }
         
-        const resp = http.post(url + 'resources', json.stringfy(data), params)
+        const resp = http.post(url + 'resources', JSON.stringify(data), params)
         check(resp, {
             'is success': (r) => r.status === 200,
         })
@@ -45,7 +45,7 @@ export default function(){
             name: 'res2'
         }
 
-        const resp = http.put(url + 'resources' + '/' + 'res1', json.stringfy(data), params)
+        const resp = http.put(url + 'resources' + '/' + 'res1', JSON.stringify(data), params)
         check(resp, {
             'is success': (r) => r.status === 200,
         })
@@ -71,7 +71,7 @@ export default function(){
             resourcename: 'res2'
         }
         
-        const resp = http.post(url + 'permissions', json.stringfy(data), params)
+        const resp = http.post(url + 'permissions', JSON.stringify(data), params)
         check(resp, {
             'is success': (r) => r.status === 200,
         })
@@ -88,7 +88,7 @@ export default function(){
         const data = {
             name: 'role1'
         }
-        const resp = http.post(url + 'roles', json.stringfy(data), params)
+        const resp = http.post(url + 'roles', JSON.stringify(data), params)
         check(resp, {
             'is success': (r) => r.status === 200,
         })
@@ -107,7 +107,7 @@ export default function(){
         ]
         }
 
-        const resp = http.put(url + 'roles' + '/' + 'role1', json.stringfy(data), params)
+        const resp = http.put(url + 'roles' + '/' + 'role1', JSON.stringify(data), params)
         check(resp, {
             'is success': (r) => r.status === 200,
         })
@@ -132,7 +132,7 @@ export default function(){
             name: 'user1',
             email: 'user1@example.com'
         }
-        const resp = http.post(url + 'users', json.stringfy(data), params)
+        const resp = http.post(url + 'users', JSON.stringify(data), params)
         check(resp, {
             'is success': (r) => r.status === 200,
         })
@@ -143,7 +143,7 @@ export default function(){
             rolename: 'role1'
         }
 
-        const resp = http.put(url + 'users' + '/' + 'user1@example.com', json.stringfy(data), params)
+        const resp = http.put(url + 'users' + '/' + 'user1@example.com', JSON.stringify(data), params)
         check(resp, {
             'is success': (r) => r.status === 200,
         })

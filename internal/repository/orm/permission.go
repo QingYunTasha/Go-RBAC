@@ -39,8 +39,12 @@ func (rso *PermissionOrm) Create(permission *RepoDomain.Permission) error {
 }
 
 func (rso *PermissionOrm) Delete(resourceName string, operation string) error {
-	permission := RepoDomain.Permission{}
-	if err := rso.Db.Where("Operation = ? AND ResourceName = ?", operation, resourceName).Take(&permission).Error; err != nil {
+	permission := RepoDomain.Permission{
+		ResourceName: resourceName,
+		Operation:    operation,
+	}
+
+	if err := rso.Db.Take(&permission).Error; err != nil {
 		return err
 	}
 	return rso.Db.Delete(&permission).Error

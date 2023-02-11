@@ -23,8 +23,10 @@ func (uso *UserOrm) GetAll() ([]RepoDomain.User, error) {
 }
 
 func (uso *UserOrm) Get(email string) (RepoDomain.User, error) {
-	user := RepoDomain.User{}
-	err := uso.Db.Take(&user, email).Error
+	user := RepoDomain.User{
+		Email: email,
+	}
+	err := uso.Db.Take(&user).Error
 	return user, err
 }
 

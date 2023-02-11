@@ -2,7 +2,7 @@ package repositorydomain
 
 type Resource struct {
 	Name        string       `gorm:"primaryKey;not null;default:null"`
-	Permissions []Permission `gorm:"foreignKey:ResourceName;references:Name;constraint:OnDelete:CASCADE"`
+	Permissions []Permission `gorm:"foreignKey:ResourceName;references:Name;constraint:OnDelete:CASCADE,OnUpdate:CASCADE"`
 }
 
 type ResourceRepository interface {

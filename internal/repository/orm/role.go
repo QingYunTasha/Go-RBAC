@@ -23,8 +23,10 @@ func (ro *RoleOrm) GetAll() ([]RepoDomain.Role, error) {
 }
 
 func (ro *RoleOrm) Get(name string) (RepoDomain.Role, error) {
-	role := RepoDomain.Role{}
-	err := ro.Db.Take(&role, name).Error
+	role := RepoDomain.Role{
+		Name: name,
+	}
+	err := ro.Db.Take(&role).Error
 	return role, err
 }
 
