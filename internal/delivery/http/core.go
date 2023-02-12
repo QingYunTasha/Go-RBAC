@@ -35,7 +35,7 @@ func (crh *CoreHandler) CheckPermission(c *gin.Context) {
 
 	hasPermission, err := crh.CoreUsecase.CheckPermission(c.Request.Context(), checkPermissionParam.UserEmail, checkPermissionParam.Action, checkPermissionParam.Resource)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusForbidden, err.Error())
 		return
 	}
 

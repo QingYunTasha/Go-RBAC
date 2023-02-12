@@ -38,7 +38,7 @@ func (ro *RoleOrm) GetByPermission(permission *RepoDomain.Permission) ([]RepoDom
 
 func (ro *RoleOrm) GetByUser(user *RepoDomain.User) (RepoDomain.Role, error) {
 	var role RepoDomain.Role
-	err := ro.Db.Model(user).Preload("RoleName").Find(&role).Error
+	err := ro.Db.Model(user).Association("Role").Find(&role)
 	return role, err
 }
 
@@ -48,6 +48,11 @@ func (ro *RoleOrm) Create(role *RepoDomain.Role) error {
 
 func (ro *RoleOrm) Update(name string, role *RepoDomain.Role) error {
 	oldRole, err := ro.Get(name)
+	if err != nil {
+		return err
+	}
+
+	err = ro.Db.Model(&oldRole).Association("Permissions").Append(role.Permissions)
 	if err != nil {
 		return err
 	}

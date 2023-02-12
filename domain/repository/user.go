@@ -4,6 +4,7 @@ type User struct {
 	Name     string
 	Email    string `gorm:"primaryKey;not null;default:null"`
 	RoleName *string
+	Role     *Role `gorm:"foreignKey:RoleName;references:Name"`
 }
 
 type UserRepository interface {

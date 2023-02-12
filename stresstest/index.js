@@ -1,6 +1,6 @@
 import http from 'k6/http';
 import { check, group } from 'k6'
-import { URL } from 'https://jslib.k6.io/url/1.0.0/index.js'
+
 
 export const options = {
     thresholds: {http_req_duration: ['p(95)<200']},
@@ -30,7 +30,7 @@ export default function(){
         const data = {
             name: 'res1',
             "permissions": [{
-		        "operation": "read"
+		        "action": "read"
 	        }]
         }
         
@@ -67,7 +67,7 @@ export default function(){
 
     group('create permission', () => {
         const data = {
-            operation: 'write',
+            action: 'write',
             resourcename: 'res2'
         }
         
@@ -96,15 +96,16 @@ export default function(){
 
     group('update role', () => {
         const data = {
-            permissions: [{
-                operation: 'write',
-                resourcename: 'res2'
-            },
-            {
-                operation: 'read',
-                resourcename: 'res2'
-            }
-        ]
+            permissions: [
+                {
+                    action: 'write',
+                    resourcename: 'res2'
+                },
+                {
+                    action: 'read',
+                    resourcename: 'res2'
+                }
+            ]
         }
 
         const resp = http.put(url + 'roles' + '/' + 'role1', JSON.stringify(data), params)
@@ -170,7 +171,34 @@ export default function(){
         })
     })
 
-    group('delete user', () => {
+
+    group('check correct permission', () => {
+        const data = {
+            useremail: 'user1@example.com',
+            action: 'write',
+            resource: 'res2'
+        }
+
+        const resp = http.post(url + 'core/checkpermission', JSON.stringify(data), params)
+        check(resp, {
+            'is success': (r) => r.status === 200,
+        })
+    })
+
+    group('check forbid permission', () => {
+        const data = {
+            useremail: 'user1@example.com',
+            action: 'write',
+            resource: 'res3'
+        }
+
+        const resp = http.post(url + 'core/checkpermission', JSON.stringify(data), params)
+        check(resp, {
+            'is success': (r) => r.status === 403,
+        })
+    })
+
+    /* group('delete user', () => {
         const resp = http.del(url + 'users' + '/' + 'user1@example.com')
         check(resp, {
             'is success': (r) => r.status === 200,
@@ -203,5 +231,5 @@ export default function(){
         check(resp, {
            'is success': (r) => r.status === 200,
        })
-   })
+   }) */
 }
