@@ -17,12 +17,12 @@ func NewRoleHandler(server *gin.Engine, usecase UsecaseDomain.RoleUsecase) {
 		RoleUsecase: usecase,
 	}
 
-	user := server.Group("/roles")
-	user.GET("/", handler.GetAll)
-	user.GET("/:name", handler.Get)
-	user.POST("/", handler.Create)
-	user.PUT("/:name", handler.Update)
-	user.DELETE("/:name", handler.Delete)
+	role := server.Group("/roles")
+	role.GET("/", handler.GetAll)
+	role.GET("/:name", handler.Get)
+	role.POST("/", handler.Create)
+	role.PUT("/:name", handler.Update)
+	role.DELETE("/:name", handler.Delete)
 }
 
 func (rlh *RoleHandler) GetAll(c *gin.Context) {

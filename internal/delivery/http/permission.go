@@ -22,11 +22,11 @@ func NewPermissionHandler(server *gin.Engine, usecase UsecaseDomain.PermissionUs
 		PermissionUsecase: usecase,
 	}
 
-	user := server.Group("/permissions")
-	user.GET("/", handler.GetAll)
-	user.GET("/:resourcename", handler.GetByResource)
-	user.POST("/", handler.Create)
-	user.DELETE("/:resourcename/:operation", handler.Delete)
+	perm := server.Group("/permissions")
+	perm.GET("/", handler.GetAll)
+	perm.GET("/:resourcename", handler.GetByResource)
+	perm.POST("/", handler.Create)
+	perm.DELETE("/:resourcename/:operation", handler.Delete)
 }
 
 func (pmh *PermissionHandler) GetAll(c *gin.Context) {

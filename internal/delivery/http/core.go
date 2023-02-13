@@ -16,8 +16,8 @@ func NewCoreHandler(server *gin.Engine, usecase UsecaseDomain.CoreUsecase) {
 		CoreUsecase: usecase,
 	}
 
-	user := server.Group("/core")
-	user.POST("/checkpermission", handler.CheckPermission)
+	core := server.Group("/core")
+	core.POST("/checkpermission", handler.CheckPermission)
 }
 
 type CheckPermissionParam struct {

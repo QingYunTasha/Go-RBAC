@@ -17,12 +17,12 @@ func NewResourceHandler(server *gin.Engine, usecase UsecaseDomain.ResourceUsecas
 		ResourceUsecase: usecase,
 	}
 
-	user := server.Group("/resources")
-	user.GET("/", handler.GetAll)
-	user.GET("/:name", handler.Get)
-	user.POST("/", handler.Create)
-	user.PUT("/:name", handler.Update)
-	user.DELETE("/:name", handler.Delete)
+	res := server.Group("/resources")
+	res.GET("/", handler.GetAll)
+	res.GET("/:name", handler.Get)
+	res.POST("/", handler.Create)
+	res.PUT("/:name", handler.Update)
+	res.DELETE("/:name", handler.Delete)
 }
 
 func (rsh *ResourceHandler) GetAll(c *gin.Context) {
