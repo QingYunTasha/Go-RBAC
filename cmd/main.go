@@ -1,7 +1,7 @@
 package main
 
 import (
-	Config "go-authorization/config"
+	"fmt"
 	HttpDelivery "go-authorization/internal/delivery/http"
 
 	OrmFactory "go-authorization/internal/repository/database/factory"
@@ -9,12 +9,19 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 func main() {
-	var err error
+	viper.SetConfigName("config.yaml")
+	viper.AddConfigPath("./config")
+	viper.SetConfigType("yaml")
+	err := viper.ReadInConfig() // Find and read the config file
+	if err != nil {             // Handle errors reading the config file
+		panic(fmt.Errorf("fatal error config file: %w", err))
+	}
 
-	db, err := OrmFactory.InitDb(Config.DB_DSN)
+	db, err := OrmFactory.InitDb(viper.GetString("DB_DSN"))
 	if err != nil {
 		panic("database connect fail")
 	}
