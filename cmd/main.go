@@ -3,8 +3,8 @@ package main
 import (
 	Config "go-authorization/config"
 	HttpDelivery "go-authorization/internal/delivery/http"
-	Db "go-authorization/internal/repository/db"
-	OrmFactory "go-authorization/internal/repository/orm/factory"
+
+	OrmFactory "go-authorization/internal/repository/database/factory"
 	UsecaseFactory "go-authorization/internal/usecase/factory"
 	"net/http"
 
@@ -14,7 +14,7 @@ import (
 func main() {
 	var err error
 
-	db, err := Db.InitDb(Config.DB_DSN)
+	db, err := OrmFactory.InitDb(Config.DB_DSN)
 	if err != nil {
 		panic("database connect fail")
 	}
@@ -26,6 +26,7 @@ func main() {
 	UseCaseRepository := UsecaseFactory.InitUsecaseRepository(OrmRepository)
 
 	server := gin.Default()
+
 	server.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"health": "ok",

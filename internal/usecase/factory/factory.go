@@ -2,7 +2,7 @@ package factory
 
 import (
 	UsecaseDomain "go-authorization/domain/usecase"
-	OrmFactory "go-authorization/internal/repository/orm/factory"
+	OrmFactory "go-authorization/internal/repository/database/factory"
 	Usecase "go-authorization/internal/usecase"
 )
 

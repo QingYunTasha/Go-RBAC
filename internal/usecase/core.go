@@ -3,7 +3,7 @@ package usecase
 import (
 	"context"
 	UsecaseDomain "go-authorization/domain/usecase"
-	OrmFactory "go-authorization/internal/repository/orm/factory"
+	OrmFactory "go-authorization/internal/repository/database/factory"
 )
 
 type CoreUsecase struct {

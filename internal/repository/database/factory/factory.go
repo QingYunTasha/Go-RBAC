@@ -2,10 +2,20 @@ package factory
 
 import (
 	RepoDomain "go-authorization/domain/repository"
-	Repository "go-authorization/internal/repository/orm"
+	Repository "go-authorization/internal/repository/database/sql"
 
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+var Db *gorm.DB
+
+func InitDb(dsn string) (*gorm.DB, error) {
+	return gorm.Open(postgres.Open(dsn), &gorm.Config{
+		// logger all sql
+		//Logger: logger.Default.LogMode(logger.Info),
+	})
+}
 
 type OrmRepository struct {
 	Level      RepoDomain.LevelRepository
